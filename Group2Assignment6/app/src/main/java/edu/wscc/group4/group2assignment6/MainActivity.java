@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -26,15 +27,23 @@ import java.util.ArrayList;
 
 import edu.wscc.group4.group2assignment6.models.TipCalculator;
 
-
+/**
+ * Start up Controller for TipCalculator app.
+ *
+ * Builds out view programmatically then depending on device orientation modifies
+ * view properties to look nice in both landscape and portrait orientation.<br/>
+ *
+ * Also, contains a NumberFormatter and 2 onClick listeners.<br/>
+ *
+ * NumberFormatter is for the editText where the user enters in a bill value. The Number
+ * Formatter makes sure it can only be 2 decimal places.<br/>
+ *
+ * 1 onClick listener handles  inserting user Input into the calculator, the other starts up the next
+ * Activity that displays the results. @see ResultActivity
+ */
 public class MainActivity extends AppCompatActivity {
     private final int BUTTON_HEIGHT = 300;
     private int buttonWidth;
-
-    private boolean veriicalDimensionSet;
-    private boolean horizontalDimenSet;
-
-
 
     private final String[] tipStrings = {"10%", "15%","18%","20%", "25%", "Custom Amount"};
 
@@ -70,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
         checkDeminsions(config);
 
     }
+
+    /**
+     * Builds out the Views that will be display onto the screen and sets them as the
+     * content View.
+     *
+     * Precondition: tipCalculator and TipButtonClicked has been initialized
+     * Postcondition: content contains View objects.
+     */
     public void buildGui() {
         getWindowManager().getDefaultDisplay().getSize(size);
         elementWidth = (int) (size.x * .9);
@@ -106,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
             buttonList.get(i).setText(tipStrings[i]);
             buttonList.get(i).setHeight(BUTTON_HEIGHT);
             buttonList.get(i).setOnClickListener(tbc);
+            buttonList.get(i).setBackgroundResource(android.R.drawable.btn_default);
         }
 
         gridParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -132,11 +150,31 @@ public class MainActivity extends AppCompatActivity {
         sv.addView(rl);
         setContentView(sv);
     }
+
+    /**
+     * Called whenever the device rotates<br/>
+     *
+     * Takes in the current configuration and passes it onto checkDimensions
+     *
+     * Precondition: buildGui has already been called
+     * Postcondition: view adjusts to new screen orientation.
+     * @param _config Configuration File of current device
+     */
     public void onConfigurationChanged(Configuration _config){
         super.onConfigurationChanged(_config);
         checkDeminsions(_config);
 
     }
+
+    /**
+     * Changes the current view layout made by buildGui()
+     * and changes the parameters to adjust to the current device
+     * orientation.
+     *
+     * Precondition: buildGui has been called
+     * Postcondition: view has adjusted to current device orientation
+     * @param _config Configuration File of current device
+     */
     public void checkDeminsions(Configuration _config){
 
         if(_config.orientation == Configuration.ORIENTATION_PORTRAIT){
@@ -172,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 buttonList.get(i).setHeight(BUTTON_HEIGHT);
                 buttonList.get(i).setOnClickListener(tbc);
                 theButtonGrid.addView(buttonList.get(i));
+                buttonList.get(i).setBackgroundResource(android.R.drawable.btn_default);
             }
 
             calculate.setWidth(elementWidth);
@@ -212,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 buttonList.get(i).setHeight(BUTTON_HEIGHT);
                 buttonList.get(i).setOnClickListener(tbc);
                 theButtonGrid.addView(buttonList.get(i));
+                buttonList.get(i).setBackgroundResource(android.R.drawable.btn_default);
             }
 
             calculate.setWidth(elementWidth);
@@ -222,7 +262,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Used for the bill EditText View<br/>
+     *
+     * Creates restriction on the EditText such as how many decimal places can be entered
+     * in.
+     *
      * https://stackoverflow.com/questions/28757931/how-to-format-the-input-of-edittext-when-typing-with-thousands-separators-in
+     *
      */
     public class NumberTextWatcher implements TextWatcher {
         private DecimalFormat df;
@@ -303,12 +349,22 @@ public class MainActivity extends AppCompatActivity {
             //Does not handle Tip Amount being in model. It should of already been entered by the tipButtons
             Log.i(TAG, "CalculateButtonClicked Listener Fired");
             try{
-                int userGuest = Integer.parseInt(numOfGuests.getText().toString());
+                //User guess can be left empty because default value of 2
+                //Have to check to see if it is empty before setting tipCalc
+                String userGuestString = numOfGuests.getText().toString();
+
+
+                if(!userGuestString.equals(""))
+                {
+                    int userGuest = Integer.parseInt(numOfGuests.getText().toString());
+                    tipCalc.setGuests(userGuest);
+                    Log.i(TAG, "userGuest: " + userGuest);
+                }
                 double userBill = Double.parseDouble(totalBill.getText().toString());
 
                 tipCalc.setBill(userBill);
-                tipCalc.setGuests(userGuest);
-                Log.i(TAG, "userGuest: " + userGuest + ", userDouble: " + userBill);
+
+                Log.i(TAG,  " userDouble: " + userBill);
                 Log.i(TAG, "State of tipCalc: " + tipCalc.toString());
             }
             catch (Exception e)
@@ -326,6 +382,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Handles putting the right tip amount into the tipCalculator
+     *
+     * Precondition: Buttons have been set to the text of .10, .15, .18, .20, .25, Custom Amount
+     * Postcondition: Button when clicked will send it text value to the tipCalculator
      */
     public class TipButtonClicked implements View.OnClickListener
     {
@@ -339,6 +398,12 @@ public class MainActivity extends AppCompatActivity {
             double[] values = {.10, .15, .18, .20, .25};
             String buttText = ((Button)view).getText().toString();
             String[] cases = tipStrings.clone();
+
+            //Unhighlights buttons be applying base resource
+            for(int i = 0; i < buttonList.size(); i++)
+            {
+                buttonList.get(i).setBackgroundResource(android.R.drawable.btn_default);
+            }
 
 
             if(buttText.equals(cases[0]))
@@ -402,7 +467,9 @@ public class MainActivity extends AppCompatActivity {
 
                 view.setBackgroundColor(0xFFF00000);
             }
-            else{
+            else
+            {
+                //Throw up Toast or something
 
             }
 

@@ -77,6 +77,12 @@ public class ResultActivity extends AppCompatActivity {
         baseTipAmount.setText(MainActivity.tipCalc.getFormattedTipPercentage());
     }
 
+    /**
+     * Up to you if you want to leave this method
+     *
+     * called by button for now in landscape and portrait result
+     * @param v
+     */
     public void goBack(View v)
     {
         this.finish();
