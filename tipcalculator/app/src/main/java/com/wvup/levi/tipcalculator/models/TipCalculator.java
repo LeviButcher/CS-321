@@ -9,7 +9,6 @@ package com.wvup.levi.tipcalculator.models;
  *
  * Created by Levi on 2/17/2018.
  */
-
 public class TipCalculator {
 
     private double _bill;

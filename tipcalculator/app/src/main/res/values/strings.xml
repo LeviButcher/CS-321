@@ -5,8 +5,8 @@
     <string name="tip_label">Tip</string>
     <string name="newsFeed">Enter a Bill Amount</string>
     <string name="totalTip">Total Tip</string>
-    <string name="totalBill">Total Bill(Includes Tip)</string>
+    <string name="totalBill">Total Bill</string>
     <string name="tipPerGuest">Tip Per Guest</string>
-    <string name="totalCostPerGuest">Cost Per Guest(Includes Tip)</string>
+    <string name="totalCostPerGuest">Cost Per Guest</string>
 
 </resources>
