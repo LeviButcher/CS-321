@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.wscc.group4.group2assignment6.ResultActivity"
+    android:layout_margin="25dp">
+
+    <TextView
+        android:id="@id/baseBillLabel"
+        android:text="@string/bill_label"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/baseBill"
+        android:layout_below="@id/baseBillLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/tipPercentLabel"
+        android:text="@string/tip_label"
+        android:layout_below="@id/baseBill"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/tipPercent"
+        android:layout_below="@id/tipPercentLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/guestAmountLabel"
+        android:text="@string/guest_label"
+        android:layout_below="@id/tipPercent"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/guestAmount"
+        android:layout_below="@id/guestAmountLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/totalTipLabel"
+        android:layout_below="@id/guestAmount"
+        android:text="@string/totalTip"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/totalTip"
+        android:layout_below="@id/totalTipLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/TotalBillLabel"
+        android:layout_below="@id/totalTip"
+        android:text="@string/totalBill"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/TotalBill"
+        android:layout_below="@id/TotalBillLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/TipPerGuestLabel"
+        android:layout_below="@id/TotalBill"
+        android:text="@string/tipPerGuest"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/tipPerGuest"
+        android:layout_below="@id/TipPerGuestLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/TotalCostPerGuestLabel"
+        android:layout_below="@id/tipPerGuest"
+        android:text="@string/totalCostPerGuest"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@id/TotalCostPerGuest"
+        android:layout_below="@id/TotalCostPerGuestLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

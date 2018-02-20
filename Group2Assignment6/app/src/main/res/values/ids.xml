@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="TotalBill" type="id"/>
+    <item name="TotalCostPerGuest" type="id"/>
+    <item name="totalTip" type="id"/>
+    <item name="tipPerGuest" type="id"/>
+    <item name="baseBill" type="id"/>
+    <item name="tipPercent" type="id"/>
+    <item name="guestAmount" type="id"/>
+
+    <item name="baseBillLabel" type="id"/>
+    <item name="tipPercentLabel" type="id"/>
+    <item name="guestAmountLabel" type="id"/>
+    <item name="totalTipLabel" type="id"/>
+    <item name="TotalBillLabel" type="id"/>
+    <item name="TipPerGuestLabel" type="id"/>
+    <item name="TotalCostPerGuestLabel" type="id"/>
+
+</resources>
