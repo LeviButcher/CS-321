@@ -173,7 +173,7 @@ public class TipCalculator {
      * @return dollar amount of tip - double
      */
     public double calculateTotalTip() {
-        return getTipPercentage() * getBill();
+        return (getTipPercentage() / 100) * getBill();
     }
 
     /**

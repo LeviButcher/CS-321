@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
             //Does not handle Tip Amount being in model. It should of already been entered by the tipButtons
 
             Log.i(TAG, "Hello world");
-            double[] values = {.10, .15, .18, .20, .25};
+            double[] values = {10, 15, 18, 20, 25};
             String buttText = ((Button)view).getText().toString();
             String[] cases = tipStrings.clone();
 
@@ -454,6 +454,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "User entered tip as: " + userTip);
                         tipCalc.setTipPercentage(userTip);
                         buttonList.get(5).setText(input.getText() + "%");
+                        tipStrings[5] = input.getText() + "%";
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
