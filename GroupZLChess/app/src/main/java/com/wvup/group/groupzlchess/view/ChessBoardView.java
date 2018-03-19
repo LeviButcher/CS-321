@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.wvup.group.groupzlchess.R;
 import com.wvup.group.groupzlchess.model.BoardPosition;
 
 /**
@@ -37,6 +39,7 @@ public class ChessBoardView extends GridLayout{
 
         //Create the TextViews
         grid = new RelativeLayout[side][side];
+
         ColorSwitcher color = new ColorSwitcher();
 
         for(int row = 0; row < side; row++)
@@ -49,6 +52,7 @@ public class ChessBoardView extends GridLayout{
                 grid[row][col].setOnDragListener(drag);
                 grid[row][col].getChildAt(0).setOnTouchListener(listener);
                 grid[row][col].setBackgroundColor(color.switchColor());
+                //grid[row][col].setBackgroundResource(R.drawable.gridoutline);
                 this.addView(grid[row][col], width, width);
             }
         }

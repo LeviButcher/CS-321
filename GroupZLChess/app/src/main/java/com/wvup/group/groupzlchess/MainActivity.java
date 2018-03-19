@@ -40,8 +40,9 @@ import static com.wvup.group.groupzlchess.model.ChessGame.GRID_SIZE;
 public class MainActivity extends AppCompatActivity {
     private ChessGame ChessGame;
     private ChessBoardView chessView;
-    private ScrollView container;
+    private RelativeLayout container;
     private final String TAG = "Main Activity";
+    private ChessSounds chessSounds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         chessView = new ChessBoardView(this, gridWidth, GRID_SIZE, bh, dl);
         setUpChessPiecesOnBoard();
         container.addView(chessView);
+
+        chessSounds = new ChessSounds(this, R.raw.waaa, R.raw.alert, R.raw.grunt);
     }
 
     private void setUpChessPiecesOnBoard()
@@ -182,7 +185,15 @@ public class MainActivity extends AppCompatActivity {
                     originalPosition = chessView.getImageViewsPosition(piece);
                     try
                     {
-                        return ChessGame.pickUpAPiece(originalPosition.getY(), originalPosition.getX());
+                        ChessGame.pickUpAPiece(originalPosition.getY(), originalPosition.getX());
+                        if(ChessGame.isPieceCurrentlyPickedUp())
+                        {
+                            chessSounds.playSound(1);
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
                     }
                     catch(Exception e)
                     {
@@ -219,11 +230,13 @@ public class MainActivity extends AppCompatActivity {
                         //Could drop images then swap based on what was moved
                         //Easier to call this method that gives the positions that were moved there images
                         updateSwappedPositions();
+                        chessSounds.playSound(2);
                         //piece.setVisibility(View.VISIBLE);
                         return true;
                     }
                     else{
                         //piece.setVisibility(View.VISIBLE);
+                        chessSounds.playSound(3);
                         return false;
                     }
                 //Exit is basically we have gone outside of a place to drop what is being dragged
