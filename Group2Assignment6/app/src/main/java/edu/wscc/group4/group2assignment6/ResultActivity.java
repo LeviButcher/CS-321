@@ -276,7 +276,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     private void formatTextView(TextView _inTV){
-        _inTV.setTextSize(14);
+        _inTV.setTextSize(18);
         _inTV.setGravity(RIGHT);
         _inTV.setTextColor(0xFF333333);
     }

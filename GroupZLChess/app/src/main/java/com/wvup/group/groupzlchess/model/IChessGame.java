@@ -12,7 +12,7 @@ public interface IChessGame {
      *
      * @param x Horizontal Position to pick up piece, starting at 0
      * @param y Vertical Position to pick up piece, starting at 0
-     * @return
+     * @return Return true if piece is picked up
      */
     boolean pickUpAPiece(int x, int y);
 
@@ -22,7 +22,7 @@ public interface IChessGame {
      *
      * @param x Horizontal Position to set piece, starting at 0
      * @param y Vertical Position to set piece, starting at 0
-     * @return
+     * @return Return true if the piece is set down
      */
     boolean setPickedUpPieceDown(int x, int y);
 
@@ -32,7 +32,7 @@ public interface IChessGame {
      *
      * @param x Horizontal Position to test , starting at 0
      * @param y Vertical Position to test, starting at 0
-     * @return
+     * @return Return true if you can set the piece down
      */
     boolean canSetPiecePickedHere(int x, int y);
 
@@ -48,13 +48,13 @@ public interface IChessGame {
 
     /**
      * Returns the length of the board
-     * @return
+     * @return Return the board length
      */
     int getBoardLength();
 
     /**
      * Returns the width of the board
-     * @return
+     * @return Return the board width
      */
     int getBoardWidth();
 }

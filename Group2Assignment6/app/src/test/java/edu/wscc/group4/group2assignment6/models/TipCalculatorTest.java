@@ -106,7 +106,7 @@ public class TipCalculatorTest
     @Test
     public void testCalculateTotalTip()
     {
-        TipCalculator tp = returnCustomTipCalculator(40, .15, 1);
+        TipCalculator tp = returnCustomTipCalculator(40, 15, 1);
 
         assertTrue(tp.calculateTotalTip() == 6);
     }
@@ -114,7 +114,7 @@ public class TipCalculatorTest
     @Test
     public void testCalculateTotalBill()
     {
-        TipCalculator tp = returnCustomTipCalculator(40, .15, 1);
+        TipCalculator tp = returnCustomTipCalculator(40, 15, 1);
 
         assertTrue(tp.calculateTotalBill() == 46);
     }
@@ -123,7 +123,7 @@ public class TipCalculatorTest
     @Test
     public void testCalculateTipPerGuest()
     {
-        TipCalculator tp = returnCustomTipCalculator(40, .15, 4);
+        TipCalculator tp = returnCustomTipCalculator(40, 15, 4);
         System.out.println(tp.calculateTipPerGuest());
         assertTrue(tp.calculateTipPerGuest() == 1.5);
     }
@@ -131,7 +131,7 @@ public class TipCalculatorTest
     @Test
     public void testCalculateTotalAmountPerGuest()
     {
-        TipCalculator tp = returnCustomTipCalculator(40, .15, 4);
+        TipCalculator tp = returnCustomTipCalculator(40, 15, 4);
 
         assertTrue(tp.calculateTotalAmountPerGuest() == 11.5);
     }
@@ -139,7 +139,7 @@ public class TipCalculatorTest
     @Test
     public void testPrint()
     {
-        TipCalculator tp = returnCustomTipCalculator(4000, .16, 4);
+        TipCalculator tp = returnCustomTipCalculator(4000, 16, 4);
 
         System.out.println(tp.toString());
     }
