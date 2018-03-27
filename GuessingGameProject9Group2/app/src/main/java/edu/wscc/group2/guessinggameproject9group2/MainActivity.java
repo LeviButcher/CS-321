@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
         }
         topRl.setLayoutParams(topParams);
         botRl.setLayoutParams(botParams);
-        topRl.setBackgroundColor(Color.parseColor("#ff0000"));
-        botRl.setBackgroundColor(Color.parseColor("#00ff00"));
+        topRl.setBackgroundColor(Color.parseColor("#d7d7ed"));
+        botRl.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
 
         // create a new fragmentManager
@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManger.beginTransaction();
 
         TopFragment topFragment = new TopFragment();
-        //BottomFragment botFragment = new BottomFragment();
+        BottomFragment botFragment = new BottomFragment();
 
         fragmentTransaction.add(topRl.getId(), topFragment);
-        //fragmentTransaction.add(botRl.getId(), botFragment);
+        fragmentTransaction.add(botRl.getId(), botFragment);
         fragmentTransaction.commit();
     }
     private static RelativeLayout.LayoutParams relativeLayoutParamsHeight(int height){

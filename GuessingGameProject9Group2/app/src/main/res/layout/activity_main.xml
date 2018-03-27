@@ -3,7 +3,6 @@
     android:id="@+id/rlMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
     tools:context=".MainActivity" >
 
     <RelativeLayout
@@ -14,6 +13,6 @@
         android:id="@+id/bottom_fragment_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/top_fragment_container" />
+        android:layout_alignBottom="@id/top_fragment_container" />
 
 </RelativeLayout>
