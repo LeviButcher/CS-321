@@ -40,7 +40,6 @@ public class TopFragment extends Fragment {
     private TextView tooHigh;
     private TextView justRight;
     private int unHighlighted = Color.DKGRAY;
-    private int toggleColor = Color.GREEN;
     private int incorrectColor = Color.parseColor("#f6b307");
     private int correctColor = Color.parseColor("#369a2c");
 
@@ -81,7 +80,8 @@ public class TopFragment extends Fragment {
         minValue.setHint("Min. Value (default 1)");
         maxValue.setHint("Max Value (default 1)");
         theMainRelative.addView(editTextLl);
-        RelativeLayout.LayoutParams forBuzzers = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        RelativeLayout.LayoutParams forBuzzers = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         forBuzzers.addRule(RelativeLayout.CENTER_VERTICAL);
         forBuzzers.addRule(RelativeLayout.CENTER_HORIZONTAL);
         theMainRelative.addView(getBuzzers(), forBuzzers);
@@ -174,9 +174,12 @@ public class TopFragment extends Fragment {
      * Postcondition: All Buzzers are back to there original background
      */
     public void resetBuzzers(){
-        tooLow.setBackgroundColor(unHighlighted);
-        tooHigh.setBackgroundColor(unHighlighted);
-        justRight.setBackgroundColor(unHighlighted);
+        tooLow.setBackgroundColor(Color.parseColor("#d8b7ca"));
+        tooHigh.setBackgroundColor(Color.parseColor("#d8b7ca"));
+        justRight.setBackgroundColor(Color.parseColor("#d8b7ca"));
+        tooLow.setTextColor(Color.parseColor("#d7d7ed"));
+        tooHigh.setTextColor(Color.parseColor("#d7d7ed"));
+        justRight.setTextColor(Color.parseColor("#d7d7ed"));
     }
 
     public static void defaultBuzzerStyle(TextView _inTextView){
