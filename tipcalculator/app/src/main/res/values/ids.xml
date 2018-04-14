@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="userBill" type="id"/>
+    <item name="userTip" type="id"/>
+    <item name="userGuest" type="id"/>
+    <item name="TotalBill" type="id"/>
+    <item name="TotalCostPerGuest" type="id"/>
+    <item name="tipAmount" type="id"/>
+    <item name="tipPerGuest" type="id"/>
+
+</resources>
