@@ -1,23 +1,34 @@
 package com.wvup.levi.mapprototype;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.text.InputType;
-import android.widget.EditText;
-
+import android.util.Log;
+import android.view.View;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.wvup.levi.mapprototype.models.PlaceOfInterest;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener{
 
     private GoogleMap mMap;
+    public static FusedLocationProviderClient flpc;
+    private static final String TAG = "MapsActivity";
+    private static final int LOCATION_REQUEST = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        flpc = LocationServices.getFusedLocationProviderClient(this);
     }
 
 
@@ -44,11 +55,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
-        mMap.setOnMarkerClickListener(this);
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    public void onClickCenter(View v){
+        centerOnDevicesLocation();
+    }
+
+
+    public void centerOnDevicesLocation(){
+        Log.d(TAG, "Entered getDevicesLocation");
+        if(ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            flpc.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        Log.d(TAG, "location is" + location);
+                        LatLng latLngOfLoc = new LatLng(location.getLatitude(), location.getLongitude());
+                        CircleOptions circle = new CircleOptions()
+                                .center(latLngOfLoc).radius(200)
+                                .strokeWidth(10.0f).strokeColor(0xFFFF0000);
+                        mMap.addCircle(circle);
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfLoc, 15.5f));
+                    }
+                }
+            });
+        }
+
+        return;
+    }
+
+    /*
+        Plan is to make Add_Location return back the Location object, then add it to the map
+
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == LOCATION_REQUEST && resultCode == RESULT_OK){
+            PlaceOfInterest fromAdd = (PlaceOfInterest) data.getSerializableExtra("Place");
+            LatLng newLatLong = new LatLng(fromAdd.getLatitude(), fromAdd.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(newLatLong).title(fromAdd.getName()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(newLatLong));
+        }
     }
 
     @Override
@@ -56,42 +105,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(latLng));
     }
 
+
+
     @Override
     public boolean onMarkerClick(final Marker marker) {
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Name Your Landmark");
-        alert.setMessage("Type in your Landmark Name");
-
-        final EditText input = new EditText(this);
-        input.setText(marker.getTitle());
-        input.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
-        alert.setView(input);
-        alert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String markerName = input.getText().toString();
-                marker.setTitle(markerName);
-                marker.showInfoWindow();
-                if(marker.getTitle() == null || marker.getTitle().equals(""))
-                {
-                    marker.remove();
-                }
-            }
-        });
-        alert.setNegativeButton("Nah", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if(marker.getTitle() == null || marker.getTitle().equals(""))
-                {
-                    marker.remove();
-                }
-                dialogInterface.cancel();
-            }
-        });
-        alert.show();
-
         return true;
     }
 
+
+    public void addLocation(View v){
+        Intent AddLocation = new Intent(this, Add_Location.class);
+        startActivityForResult(AddLocation, LOCATION_REQUEST);
+    }
 }
