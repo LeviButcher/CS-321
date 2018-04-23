@@ -41,6 +41,7 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:parentActivityName=".MainActivity"></activity>
+
         <activity android:name=".Add_Location"
             android:label="Add Location"></activity>
     </application>

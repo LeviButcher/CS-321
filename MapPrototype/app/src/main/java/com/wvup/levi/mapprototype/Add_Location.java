@@ -13,7 +13,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.wvup.levi.mapprototype.models.PlaceOfInterest;
 
+import java.io.File;
+import java.nio.file.Files;
+
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static java.nio.file.Files.readAllBytes;
 
 public class Add_Location extends AppCompatActivity {
     private final String TAG = "Add_LocationActivity";
@@ -45,9 +49,18 @@ public class Add_Location extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_FILE && resultCode == RESULT_OK){
-            Uri file = data.getData();
+            Uri path = data.getData();
+            if(path.getPath() != null){
+                File newFile = new File(path.getPath());
+                Log.d(TAG, "File name is: " + newFile.getName());
+                try{
+                    byte[] byteFiles = Files.readAllBytes(newFile.toPath());
 
-            Log.d(TAG, "file data is " + file);
+                }
+                catch(Exception e){
+                    Log.d(TAG, e.toString());
+                }
+            }
         }
     }
 
