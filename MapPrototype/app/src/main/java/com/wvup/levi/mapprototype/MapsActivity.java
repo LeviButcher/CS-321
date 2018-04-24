@@ -14,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -86,23 +87,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return;
     }
 
-    /*
-        Plan is to make Add_Location return back the Location object, then add it to the map
-
-     */
+    //Gets location returned from Add_Location
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(requestCode == LOCATION_REQUEST && resultCode == RESULT_OK){
             PlaceOfInterest fromAdd = (PlaceOfInterest) data.getSerializableExtra("Place");
             LatLng newLatLong = new LatLng(fromAdd.getLatitude(), fromAdd.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(newLatLong).title(fromAdd.getName()));
+            MarkerOptions placeMarker = new MarkerOptions().position(newLatLong).title(fromAdd.getName());
+            if(fromAdd.getPicture() != null){
+                Log.d(TAG, "getPicture was not null");
+                placeMarker.icon(BitmapDescriptorFactory.fromBitmap(fromAdd.getPicture()));
+            }
+            mMap.addMarker(placeMarker);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(newLatLong));
         }
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        mMap.addMarker(new MarkerOptions().position(latLng));
+        Log.d(TAG,"Map clicked at " + latLng);
+        //mMap.addMarker(new MarkerOptions().position(latLng));
+
     }
 
 

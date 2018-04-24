@@ -1,5 +1,7 @@
 package com.wvup.levi.mapprototype.models;
 
+import android.graphics.Bitmap;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
@@ -9,6 +11,7 @@ public class PlaceOfInterest implements Serializable {
     private String name;
     private double longitude;
     private double latitude;
+    private Bitmap picture;
 
     public PlaceOfInterest(){
 
@@ -42,6 +45,14 @@ public class PlaceOfInterest implements Serializable {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public Bitmap getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Bitmap picture) {
+        this.picture = picture;
     }
 
     public String toString(){
