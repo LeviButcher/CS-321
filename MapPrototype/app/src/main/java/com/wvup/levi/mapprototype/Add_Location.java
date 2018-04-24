@@ -2,13 +2,19 @@ package com.wvup.levi.mapprototype;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.wvup.levi.mapprototype.models.PlaceOfInterest;
@@ -29,37 +35,39 @@ public class Add_Location extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add__location);
-
+        newLocation = new PlaceOfInterest();
     }
 
     protected void onStart(){
         super.onStart();
-        newLocation = new PlaceOfInterest();
         nameEditText = findViewById(R.id.name);
 
     }
 
     public void AddFiles(View v){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setType("*/*");
+        intent.setType("image/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         // Only the system receives the ACTION_OPEN_DOCUMENT, so no need to test.
         startActivityForResult(intent, REQUEST_FILE);
     }
 
+    //Convert file to byte - byte[] byteFiles = Files.readAllBytes(newFile.toPath());
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_FILE && resultCode == RESULT_OK){
             Uri path = data.getData();
             if(path.getPath() != null){
-                File newFile = new File(path.getPath());
-                Log.d(TAG, "File name is: " + newFile.getName());
                 try{
-                    byte[] byteFiles = Files.readAllBytes(newFile.toPath());
-
+                    newLocation.setPicture(MediaStore.Images.Media.getBitmap(this.getContentResolver(), path));
+                    Log.d(TAG, "after assigning location image is " + newLocation.getPicture());
+                    ImageView imageView = findViewById(R.id.placePic);
+                    imageView.setImageBitmap(newLocation.getPicture());
                 }
                 catch(Exception e){
-                    Log.d(TAG, e.toString());
+                    Log.d(TAG, "Image could not be resolved");
                 }
+
             }
         }
     }
@@ -70,7 +78,7 @@ public class Add_Location extends AppCompatActivity {
     public void Submit(View v){
 
         newLocation.setName(nameEditText.getText().toString());
-
+        Log.d(TAG, "onSubmit image was " + newLocation.getPicture());
         Log.d(TAG,"location is" + newLocation.toString());
         setToDeviceLocation();
 
@@ -85,7 +93,7 @@ public class Add_Location extends AppCompatActivity {
                     if (location != null) {
                         newLocation.setLongitude(location.getLongitude());
                         newLocation.setLatitude(location.getLatitude());
-
+                        Log.d(TAG, "newLocation image was " + newLocation.getPicture());
                         Intent returnData = new Intent();
                         returnData.putExtra("Place", newLocation);
                         setResult(RESULT_OK, returnData);
