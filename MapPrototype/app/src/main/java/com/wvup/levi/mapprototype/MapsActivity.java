@@ -2,6 +2,9 @@ package com.wvup.levi.mapprototype;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -88,6 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     //Gets location returned from Add_Location
+    //https://stackoverflow.com/questions/35718103/how-to-specify-the-size-of-the-icon-on-the-marker-in-google-maps-v2-android
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(requestCode == LOCATION_REQUEST && resultCode == RESULT_OK){
@@ -96,7 +101,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MarkerOptions placeMarker = new MarkerOptions().position(newLatLong).title(fromAdd.getName());
             if(fromAdd.getPicture() != null){
                 Log.d(TAG, "getPicture was not null");
-                placeMarker.icon(BitmapDescriptorFactory.fromBitmap(fromAdd.getPicture()));
+                int height = 100;
+                int width = 100;
+                Bitmap picture = ByteConvertor.convertToBitmap(fromAdd.getPicture());
+                BitmapDrawable d = new BitmapDrawable(getResources(), picture);
+                Bitmap smallmarker = Bitmap.createScaledBitmap(d.getBitmap(), width, height, false);
+
+                placeMarker.icon(BitmapDescriptorFactory.fromBitmap(smallmarker));
             }
             mMap.addMarker(placeMarker);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(newLatLong));

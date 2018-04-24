@@ -11,7 +11,7 @@ public class PlaceOfInterest implements Serializable {
     private String name;
     private double longitude;
     private double latitude;
-    private Bitmap picture;
+    private byte[] picture;
 
     public PlaceOfInterest(){
 
@@ -47,11 +47,11 @@ public class PlaceOfInterest implements Serializable {
         this.latitude = latitude;
     }
 
-    public Bitmap getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(Bitmap picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 

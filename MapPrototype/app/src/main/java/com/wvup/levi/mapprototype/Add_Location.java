@@ -41,7 +41,6 @@ public class Add_Location extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         nameEditText = findViewById(R.id.name);
-
     }
 
     public void AddFiles(View v){
@@ -59,13 +58,15 @@ public class Add_Location extends AppCompatActivity {
             Uri path = data.getData();
             if(path.getPath() != null){
                 try{
-                    newLocation.setPicture(MediaStore.Images.Media.getBitmap(this.getContentResolver(), path));
-                    Log.d(TAG, "after assigning location image is " + newLocation.getPicture());
+                    Bitmap picture = MediaStore.Images.Media.getBitmap(this.getContentResolver(), path);
+                    Log.d(TAG, "after assigning location image is " + picture.toString());
                     ImageView imageView = findViewById(R.id.placePic);
-                    imageView.setImageBitmap(newLocation.getPicture());
+                    imageView.setImageBitmap(picture);
+                    newLocation.setPicture(ByteConvertor.convertToByteArr(picture));
                 }
                 catch(Exception e){
-                    Log.d(TAG, "Image could not be resolved");
+                    Log.d(TAG, "Image could not be resolved:");
+                    e.printStackTrace();
                 }
 
             }
