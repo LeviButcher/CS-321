@@ -119,6 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d(TAG,"Map clicked at " + latLng);
         //mMap.addMarker(new MarkerOptions().position(latLng));
 
+
     }
 
 

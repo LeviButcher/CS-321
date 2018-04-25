@@ -82,7 +82,6 @@ public class Add_Location extends AppCompatActivity {
         Log.d(TAG, "onSubmit image was " + newLocation.getPicture());
         Log.d(TAG,"location is" + newLocation.toString());
         setToDeviceLocation();
-
     }
 
     private void setToDeviceLocation() {
