@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -40,7 +41,7 @@ import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, LocationListener{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationListener, GoogleMap.OnMapLongClickListener{
 
     private GoogleMap mMap;
     public static LocationManager locationManager;
@@ -136,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
         if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             //Adds a center on me button to map
             mMap.setMyLocationEnabled(true);
@@ -166,23 +167,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapClick(LatLng latLng) {
-        Log.d(TAG,"Map clicked at " + latLng);
-        //mMap.addMarker(new MarkerOptions().position(latLng));
-    }
-
-
-
-    @Override
     public boolean onMarkerClick(final Marker marker) {
         return true;
     }
 
 
     public void addLocation(View v){
+        if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            //This may not work
+            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double latitude = lastLocation.getLatitude();
+            double longitude = lastLocation.getLongitude();
+            startAddLocation(longitude, latitude);
+        }
+        else{
+            Toast toast = new Toast(this);
+            toast.setText("Missing Permissions");
+            toast.show();
+        }
+    }
+
+    /**
+     * Starts up the Add_Location Activity
+     * passing in Longitude and Latitude is required
+     * @param longitude
+     * @param latitude
+     */
+    private void startAddLocation(double longitude, double latitude){
         Intent AddLocation = new Intent(this, Add_Location.class);
+        AddLocation.putExtra("latitude", latitude);
+        AddLocation.putExtra("longitude", longitude);
         startActivityForResult(AddLocation, LOCATION_REQUEST);
     }
+
 
     @Override
     public void onLocationChanged(Location location) {
@@ -208,5 +225,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        startAddLocation(latLng.longitude, latLng.latitude);
     }
 }

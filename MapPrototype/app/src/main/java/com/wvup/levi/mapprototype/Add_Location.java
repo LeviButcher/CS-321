@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -81,26 +82,22 @@ public class Add_Location extends AppCompatActivity {
         newLocation.setName(nameEditText.getText().toString());
         Log.d(TAG, "onSubmit image was " + newLocation.getPicture());
         Log.d(TAG,"location is" + newLocation.toString());
-        setToDeviceLocation();
-    }
 
-    private void setToDeviceLocation() {
-//        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            MapsActivity.flpc.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<android.location.Location>() {
-//                        @Override
-//                        public void onSuccess(android.location.Location location) {
-//                            // Got last known location. In some rare situations this can be null.
-//                            if (location != null) {
-//                                newLocation.setLongitude(location.getLongitude());
-//                                newLocation.setLatitude(location.getLatitude());
-//                                Log.d(TAG, "newLocation image was " + newLocation.getPicture());
-//                                Intent returnData = new Intent();
-//                                returnData.putExtra("Place", newLocation);
-//                                setResult(RESULT_OK, returnData);
-//                                finish();
-//                            }
-//                }
-//            });
-//        }
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            double longitude = extras.getDouble("longitude");
+            double latitude = extras.getDouble("latitude");
+            newLocation.setLatitude(latitude);
+            newLocation.setLongitude(longitude);
+            Intent returnData = new Intent();
+            returnData.putExtra("Place", newLocation);
+            setResult(RESULT_OK, returnData);
+            finish();
+        }
+        else{
+            Toast toast = new Toast(this);
+            toast.setText("Lat and Long was not set, go back to map");
+            toast.show();
+        }
     }
 }
