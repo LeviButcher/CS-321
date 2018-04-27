@@ -1,16 +1,23 @@
 package com.wvup.levi.mapprototype;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,17 +30,26 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.wvup.levi.mapprototype.models.PlaceOfInterest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, LocationListener{
 
     private GoogleMap mMap;
-    public static FusedLocationProviderClient flpc;
+    public static LocationManager locationManager;
     private static final String TAG = "MapsActivity";
     private static final int LOCATION_REQUEST = 4;
+    private static final int REQUEST_LOC_PERMISSION = 1;
+    private static final int MIN_DISTANCE = 25;
+    private ArrayList<LatLng> routePoints;
+    private boolean trackingRoute = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +59,70 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        flpc = LocationServices.getFusedLocationProviderClient(this);
+        routePoints = new ArrayList<>();
+        locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
     }
 
+    public void eventStartTrackingRoute(View v){
+        trackingRoute = true;
+        //mount up tracking listeners
+        startTrackingRoute();
+        //grab button to switch text and onClickListener
+        changeStartRouteButton(trackingRoute);
+    }
+
+    private void changeStartRouteButton(final boolean startTracking){
+        Button startRoute = findViewById(R.id.trackRoute);
+        if(startTracking){
+            startRoute.setText("Stop Tracking");
+        }
+        else{
+            startRoute.setText("Start Route");
+        }
+        startRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(startTracking){
+                    eventStopTrackingRoute(view);
+                }
+                else{
+                    eventStartTrackingRoute(view);
+                }
+            }
+        });
+    }
+
+    public void eventStopTrackingRoute(View v){
+        if(trackingRoute){
+            trackingRoute = false;
+            //Unmount tracking listeners
+            locationManager.removeUpdates(this);
+            changeStartRouteButton(trackingRoute);
+        }
+    }
+
+    private void startTrackingRoute(){
+        if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            //Starts up alert dialog for getting permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOC_PERMISSION);
+        }
+        else{
+            //Start the location updater listener
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, MIN_DISTANCE, this);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, this);
+            }
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -60,35 +137,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
-    }
-
-    public void onClickCenter(View v){
-        centerOnDevicesLocation();
-    }
-
-
-    public void centerOnDevicesLocation(){
-        Log.d(TAG, "Entered getDevicesLocation");
-        if(ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            flpc.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        Log.d(TAG, "location is" + location);
-                        LatLng latLngOfLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                        CircleOptions circle = new CircleOptions()
-                                .center(latLngOfLoc).radius(200)
-                                .strokeWidth(10.0f).strokeColor(0xFFFF0000);
-                        mMap.addCircle(circle);
-
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfLoc, 15.5f));
-                    }
-                }
-            });
-        }
-
-        return;
+        if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            //Adds a center on me button to map
+            mMap.setMyLocationEnabled(true);
     }
 
     //Gets location returned from Add_Location
@@ -105,9 +156,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 int width = 100;
                 Bitmap picture = ByteConvertor.convertToBitmap(fromAdd.getPicture());
                 BitmapDrawable d = new BitmapDrawable(getResources(), picture);
-                Bitmap smallmarker = Bitmap.createScaledBitmap(d.getBitmap(), width, height, false);
+                Bitmap smallMarker = Bitmap.createScaledBitmap(d.getBitmap(), width, height, false);
 
-                placeMarker.icon(BitmapDescriptorFactory.fromBitmap(smallmarker));
+                placeMarker.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
             }
             mMap.addMarker(placeMarker);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(newLatLong));
@@ -118,8 +169,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapClick(LatLng latLng) {
         Log.d(TAG,"Map clicked at " + latLng);
         //mMap.addMarker(new MarkerOptions().position(latLng));
-
-
     }
 
 
@@ -133,5 +182,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void addLocation(View v){
         Intent AddLocation = new Intent(this, Add_Location.class);
         startActivityForResult(AddLocation, LOCATION_REQUEST);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d(TAG, "My location is" + location);
+        LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        routePoints.add(currentLocation);
+        if(routePoints.size() > 1){
+            Polyline route = mMap.addPolyline(new PolylineOptions());
+            route.setPoints(routePoints);
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }

@@ -85,22 +85,22 @@ public class Add_Location extends AppCompatActivity {
     }
 
     private void setToDeviceLocation() {
-        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            MapsActivity.flpc.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<android.location.Location>() {
-                @Override
-                public void onSuccess(android.location.Location location) {
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        newLocation.setLongitude(location.getLongitude());
-                        newLocation.setLatitude(location.getLatitude());
-                        Log.d(TAG, "newLocation image was " + newLocation.getPicture());
-                        Intent returnData = new Intent();
-                        returnData.putExtra("Place", newLocation);
-                        setResult(RESULT_OK, returnData);
-                        finish();
-                    }
-                }
-            });
-        }
+//        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            MapsActivity.flpc.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<android.location.Location>() {
+//                        @Override
+//                        public void onSuccess(android.location.Location location) {
+//                            // Got last known location. In some rare situations this can be null.
+//                            if (location != null) {
+//                                newLocation.setLongitude(location.getLongitude());
+//                                newLocation.setLatitude(location.getLatitude());
+//                                Log.d(TAG, "newLocation image was " + newLocation.getPicture());
+//                                Intent returnData = new Intent();
+//                                returnData.putExtra("Place", newLocation);
+//                                setResult(RESULT_OK, returnData);
+//                                finish();
+//                            }
+//                }
+//            });
+//        }
     }
 }
