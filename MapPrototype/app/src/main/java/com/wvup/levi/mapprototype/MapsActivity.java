@@ -50,6 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_LOC_PERMISSION = 1;
     private static final int MIN_DISTANCE = 25;
     private ArrayList<LatLng> routePoints;
+    private ArrayList<PlaceOfInterest> places;
     private boolean trackingRoute = false;
 
     @Override
@@ -61,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         routePoints = new ArrayList<>();
+        places = new ArrayList<>();
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
     }
 
@@ -99,6 +101,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Unmount tracking listeners
             locationManager.removeUpdates(this);
             changeStartRouteButton(trackingRoute);
+            //TODO Send DB stuff to Add_Route
+            Intent addRoute = new Intent(this, Add_Route.class);
+            addRoute.putExtra("places", places);
+            addRoute.putExtra("routePoints", routePoints);
+            //Once child finishes this activity will also finish
+            finishFromChild(this);
+            startActivity(addRoute);
         }
     }
 
@@ -161,6 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 placeMarker.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
             }
+            places.add(fromAdd);
             mMap.addMarker(placeMarker);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(newLatLong));
         }

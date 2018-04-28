@@ -1,13 +1,23 @@
 package com.wvup.levi.mapprototype.models;
 
-import android.graphics.Bitmap;
-
-import com.google.android.gms.maps.model.LatLng;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "PlaceOfInterest", indices = {@Index(value = {"name", "routeId"})},
+        foreignKeys = @ForeignKey(entity = Route.class, parentColumns = "id",
+        childColumns = "routeId", onDelete = CASCADE))
 public class PlaceOfInterest implements Serializable {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private int routeId;
     private String name;
     private double longitude;
     private double latitude;
@@ -17,6 +27,7 @@ public class PlaceOfInterest implements Serializable {
 
     }
 
+    @Ignore
     public PlaceOfInterest(String name, double longitude, double latitude){
         this.setName(name);
         this.setLatitude(latitude);
@@ -60,9 +71,19 @@ public class PlaceOfInterest implements Serializable {
     }
 
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public int getRouteId() {
+        return routeId;
+    }
 
-
-
+    public void setRouteId(int routeId) {
+        this.routeId = routeId;
+    }
 }

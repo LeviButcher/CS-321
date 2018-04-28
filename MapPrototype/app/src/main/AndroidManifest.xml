@@ -40,10 +40,14 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".MainActivity"></activity>
-
-        <activity android:name=".Add_Location"
-            android:label="Add Location"></activity>
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Add_Location"
+            android:label="Add Location" />
+        <activity android:name=".Add_Route" />
+        <activity
+            android:name=".ViewRouteActivity"
+            android:label="@string/title_activity_view_route"></activity>
     </application>
 
 </manifest>

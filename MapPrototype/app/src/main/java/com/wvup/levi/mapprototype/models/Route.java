@@ -1,16 +1,42 @@
 package com.wvup.levi.mapprototype.models;
 
-import com.google.android.gms.maps.model.LatLng;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+@Entity(tableName = "Route", indices = {@Index(value = {"title"})})
+public class Route{
 
-public class Route implements Serializable{
-
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String title;
     private String description;
-    private ArrayList<LatLng> path;
-    private ArrayList<PlaceOfInterest> Places;
 
+    public Route(){
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
