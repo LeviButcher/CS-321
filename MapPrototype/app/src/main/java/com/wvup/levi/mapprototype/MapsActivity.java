@@ -129,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,MIN_DISTANCE, this);
             }
         }
     }

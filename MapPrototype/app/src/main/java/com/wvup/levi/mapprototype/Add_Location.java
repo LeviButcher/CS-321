@@ -44,7 +44,7 @@ public class Add_Location extends AppCompatActivity {
         nameEditText = findViewById(R.id.name);
     }
 
-    public void AddFiles(View v){
+    public void addLocationPic(View v){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);

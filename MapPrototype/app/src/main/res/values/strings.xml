@@ -2,4 +2,8 @@
     <string name="app_name">MapPrototype</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_view_route">Map</string>
+    <string name="submit">Submit</string>
+    <string name="image_of_location">Image of Location</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
 </resources>

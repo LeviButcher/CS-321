@@ -3,12 +3,14 @@ package com.wvup.levi.mapprototype;
 import android.app.Application;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,13 +52,19 @@ public class MainActivity extends AppCompatActivity {
 
     public LinearLayout buildOutRouteList(){
         LinearLayout ll = new LinearLayout(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 20, 0, 20);
         ll.setOrientation(LinearLayout.VERTICAL);
         List<Route> routes = repo.getRoutes();
 
         for(final Route route : routes){
-            TextView tv = new TextView(this);
-            tv.setText(route.getTitle());
-            tv.setOnClickListener(new View.OnClickListener() {
+            LinearLayout listItem = new LinearLayout(this, null, 0, R.style.ListItem);
+            TextView title = new TextView(this, null, 0, R.style.ListItemTitle);
+            TextView description = new TextView(this, null, 0, R.style.ListItemDescription);
+            listItem.setOrientation(LinearLayout.VERTICAL);
+            title.setText(route.getTitle());
+            description.setText(route.getDescription());
+            listItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "id is" + route.getId());
@@ -64,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
                     viewRoute(route.getId());
                 }
             });
-            ll.addView(tv);
+            listItem.addView(title);
+
+            listItem.addView(description);
+            ll.addView(listItem, lp);
         }
         return ll;
     }
