@@ -27,4 +27,7 @@ public interface RouteDAO {
 
     @Delete
     void delete(Route route);
+
+    @Query("Delete from Route")
+    void wipe();
 }

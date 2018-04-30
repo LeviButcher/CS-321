@@ -34,6 +34,7 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
     private List<RoutePoint> points;
     private List<PlaceOfInterest> places;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,11 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+    }
+
+    protected void onStart(){
+        super.onStart();
         Bundle extras = getIntent().getExtras();
         repo = new RouteRepository(this.getApplication());
         if(extras != null){
@@ -72,6 +78,17 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
         }
         traceRoute();
         addOnPlaces();
+        centerOnPathStart();
+    }
+
+    public void centerOnPathStart(){
+        if(points.size() > 0){
+            RoutePoint first = points.get(0);
+            LatLng firstLatLng =new LatLng(first.getLatitude(), first.getLongitude());
+            MarkerOptions placeMarker = new MarkerOptions().position(firstLatLng).title("Start");
+            mMap.addMarker(placeMarker);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15.5f));
+        }
     }
 
     private void traceRoute(){

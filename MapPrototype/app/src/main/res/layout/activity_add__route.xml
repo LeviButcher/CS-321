@@ -6,38 +6,56 @@
     android:layout_height="match_parent"
     tools:context=".Add_Route">
 
+    <TextView
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:labelFor="@id/title"
+        android:text="@string/name_of_route"
+        app:layout_constraintBottom_toTopOf="@+id/title"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/title"
-        android:layout_width="94dp"
+        android:layout_width="263dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="132dp"
-        android:layout_marginTop="72dp"
-        android:hint="Title"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="52dp"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/description"
+    <TextView
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="132dp"
-        android:layout_marginTop="188dp"
-        android:hint="description"
+        android:layout_marginStart="68dp"
+        android:labelFor="@id/description"
+        android:text="@string/description"
+        app:layout_constraintBottom_toTopOf="@+id/description"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="263dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="64dp"
         android:inputType="textMultiLine"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="132dp"
-        android:layout_marginTop="348dp"
-        android:text="Submit"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="84dp"
         android:onClick="Submit"
+        android:text="@string/submit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
 
 </android.support.constraint.ConstraintLayout>
