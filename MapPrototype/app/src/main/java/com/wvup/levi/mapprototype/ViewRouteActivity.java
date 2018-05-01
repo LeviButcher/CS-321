@@ -1,5 +1,7 @@
 package com.wvup.levi.mapprototype;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -86,7 +89,7 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
     private void addOnPlaces(){
         for(PlaceOfInterest place : places){
             LatLng newLatLong = new LatLng(place.getLatitude(), place.getLongitude());
-            MarkerOptions placeMarker = new MarkerOptions().position(newLatLong).title(place.getName());
+            final MarkerOptions placeMarker = new MarkerOptions().position(newLatLong).title(place.getName());
             if(place.getPicture() != null){
                 int height = 100;
                 int width = 100;
@@ -96,7 +99,19 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
 
                 placeMarker.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
             }
-            mMap.addMarker(placeMarker);
+            mMap.addMarker(placeMarker).setTag(place);
+            final Activity currentActivity = this;
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    if(marker.getTag() != null){
+                        Intent viewPlace = new Intent(currentActivity ,ViewLocationActivity.class);
+                        startActivity(viewPlace);
+                    }
+                    //Should send up toast here
+                    return false;
+                }
+            });
         }
     }
 }

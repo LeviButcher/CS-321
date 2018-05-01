@@ -46,6 +46,10 @@ public class RouteRepository {
         new insertAsyncTaskPlace(placeOfInterestDAO).execute(place);
     }
 
+    public PlaceOfInterest getPlace(int placeId){
+        return placeOfInterestDAO.get(placeId);
+    }
+
     public void insertPoint(RoutePoint routePoint){
         new insertAsyncTaskRoutePoint(routePointDAO).execute(routePoint);
     }

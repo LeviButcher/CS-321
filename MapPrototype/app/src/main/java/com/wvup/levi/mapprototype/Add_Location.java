@@ -24,6 +24,7 @@ import java.io.File;
 import java.nio.file.Files;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static java.nio.file.Files.find;
 import static java.nio.file.Files.readAllBytes;
 
 public class Add_Location extends AppCompatActivity {
@@ -31,6 +32,7 @@ public class Add_Location extends AppCompatActivity {
     private final int REQUEST_FILE = 6;
     private PlaceOfInterest newLocation;
     private EditText nameEditText;
+    private EditText descriptionEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class Add_Location extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         nameEditText = findViewById(R.id.name);
+        descriptionEditText = findViewById(R.id.description);
     }
 
     public void addLocationPic(View v){
@@ -80,6 +83,7 @@ public class Add_Location extends AppCompatActivity {
     public void Submit(View v){
 
         newLocation.setName(nameEditText.getText().toString());
+        newLocation.setDescription(nameEditText.getText().toString());
         Log.d(TAG, "onSubmit image was " + newLocation.getPicture());
         Log.d(TAG,"location is" + newLocation.toString());
 

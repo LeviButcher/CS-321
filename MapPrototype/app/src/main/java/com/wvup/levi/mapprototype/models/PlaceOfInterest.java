@@ -19,6 +19,7 @@ public class PlaceOfInterest implements Serializable {
     private int id;
     private int routeId;
     private String name;
+    private String description;
     private double longitude;
     private double latitude;
     private byte[] picture;
@@ -85,5 +86,13 @@ public class PlaceOfInterest implements Serializable {
 
     public void setRouteId(int routeId) {
         this.routeId = routeId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

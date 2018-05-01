@@ -47,7 +47,8 @@
         <activity android:name=".Add_Route" />
         <activity
             android:name=".ViewRouteActivity"
-            android:label="@string/title_activity_view_route"></activity>
+            android:label="@string/title_activity_view_route" />
+        <activity android:name=".ViewLocationActivity"></activity>
     </application>
 
 </manifest>

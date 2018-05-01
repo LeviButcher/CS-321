@@ -9,7 +9,7 @@ import com.wvup.levi.mapprototype.models.PlaceOfInterest;
 import com.wvup.levi.mapprototype.models.Route;
 import com.wvup.levi.mapprototype.models.RoutePoint;
 
-@Database(entities = {Route.class, RoutePoint.class, PlaceOfInterest.class}, version = 1)
+@Database(entities = {Route.class, RoutePoint.class, PlaceOfInterest.class}, version = 2)
 public abstract class RouteDatabase extends RoomDatabase{
 
     public abstract RouteDAO routeDAO();
@@ -25,6 +25,7 @@ public abstract class RouteDatabase extends RoomDatabase{
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             RouteDatabase.class, "route_database")
                             .allowMainThreadQueries()
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
