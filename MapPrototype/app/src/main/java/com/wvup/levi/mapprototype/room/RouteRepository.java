@@ -30,6 +30,10 @@ public class RouteRepository {
         return routeDAO.getAll();
     }
 
+    public void wipeRoutes(){
+        routeDAO.wipe();
+    }
+
     public void insertRoute(Route route){
         new insertAsyncTaskRoute(routeDAO).execute(route);
     }

@@ -38,9 +38,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStart(){
         super.onStart();
-        ScrollView sv = findViewById(R.id.container);
-        sv.removeAllViews();
-        sv.addView(buildOutRouteList());
+        TextView title = findViewById(R.id.title);
+        title.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                repo.wipeRoutes();
+                updateList();
+                return true;
+            }
+        });
+        updateList();
     }
 
     //OnClick that starts the map up
@@ -50,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(mapIntent);
     }
 
-    public LinearLayout buildOutRouteList(){
+    public void updateList(){
+        ScrollView sv = findViewById(R.id.container);
+        sv.removeAllViews();
+        sv.addView(buildOutRouteList());
+    }
+
+    private LinearLayout buildOutRouteList(){
         LinearLayout ll = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 20, 0, 20);
