@@ -30,8 +30,15 @@ public class ViewLocationActivity extends AppCompatActivity {
         locName = findViewById(R.id.viewLocName);
         locDescription = findViewById(R.id.viewLocDescription);
         locPic = findViewById(R.id.viewLocPic);
-        viewLocation = repo.getPlace(1);
-        setUpView();
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            int id = extras .getInt("placeId");
+            viewLocation = repo.getPlace(id);
+            setUpView();
+        }
+        else{
+            finish();
+        }
     }
 
     public void setUpView()

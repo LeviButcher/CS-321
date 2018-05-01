@@ -123,6 +123,7 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
                 public boolean onMarkerClick(Marker marker) {
                     if(marker.getTag() != null){
                         Intent viewPlace = new Intent(currentActivity ,ViewLocationActivity.class);
+                        viewPlace.putExtra("placeId", ((PlaceOfInterest)marker.getTag()).getId());
                         startActivity(viewPlace);
                     }
                     //Should send up toast here
