@@ -147,9 +147,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapLongClickListener(this);
-        if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             //Adds a center on me button to map
             mMap.setMyLocationEnabled(true);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(location != null){
+                LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                routePoints.add(myLatLng);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15.5f));
+            }
+        }
     }
 
     //Gets location returned from Add_Location

@@ -2,6 +2,7 @@ package com.wvup.levi.mapprototype;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,13 @@ public class ViewLocationActivity extends AppCompatActivity {
     {
         locName.setText(viewLocation.getName());
         locDescription.setText(viewLocation.getDescription());
-
+        try{
+            if(viewLocation.getPicture() != null && viewLocation.getPicture().length > 0){
+                locPic.setImageBitmap(ByteConvertor.convertToBitmap(viewLocation.getPicture()));
+            }
+        }
+        catch(Exception e) {
+            Log.d(TAG, e.toString());
+        }
     }
 }

@@ -47,15 +47,16 @@ public class Add_Route extends AppCompatActivity {
             Route route = new Route();
             route.setTitle(titleET.getText().toString());
             route.setDescription(descriptionET.getText().toString());
-            repo.insertRoute(route);
+            int id = repo.insertRoute(route);
             //TODO insert location and path to db
-            Route justAdded = repo.getMostRecentRoute();
-
-            if(justAdded.getId() > 0){
-                addLocationsToDB(justAdded.getId());
-                addPathToDB(justAdded.getId());
-                return true;
+            if(id == -1){
+                Log.d(TAG, "error");
+                finish();
             }
+            addLocationsToDB(id);
+            addPathToDB(id);
+            return true;
+
         }
         else{
             Toast toast = new Toast(this);

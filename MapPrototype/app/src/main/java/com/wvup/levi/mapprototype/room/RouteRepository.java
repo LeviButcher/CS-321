@@ -34,8 +34,13 @@ public class RouteRepository {
         routeDAO.wipe();
     }
 
-    public void insertRoute(Route route){
-        new insertAsyncTaskRoute(routeDAO).execute(route);
+    public int insertRoute(Route route){
+        try{
+            return (int) new insertAsyncTaskRoute(routeDAO).execute(route).get().longValue();
+        }
+        catch(Exception e){
+            return -1;
+        }
     }
 
     public List<RoutePoint> getRoutePoints(int routeId) {
@@ -58,7 +63,7 @@ public class RouteRepository {
         new insertAsyncTaskRoutePoint(routePointDAO).execute(routePoint);
     }
 
-    private static class insertAsyncTaskRoute extends AsyncTask<Route, Void, Void> {
+    private static class insertAsyncTaskRoute extends AsyncTask<Route, Void, Long> {
 
         private RouteDAO asyncRouteDAO;
 
@@ -67,9 +72,8 @@ public class RouteRepository {
         }
 
         @Override
-        protected Void doInBackground(Route... routes) {
-            asyncRouteDAO.insert(routes[0]);
-            return null;
+        protected Long doInBackground(Route... routes) {
+            return asyncRouteDAO.insert(routes[0]);
         }
     }
 
