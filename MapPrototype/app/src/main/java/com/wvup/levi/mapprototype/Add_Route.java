@@ -50,7 +50,7 @@ public class Add_Route extends AppCompatActivity {
             repo.insertRoute(route);
             //TODO insert location and path to db
             Route justAdded = repo.getMostRecentRoute();
-            Log.d(TAG, "id is" + justAdded.getId());
+
             if(justAdded.getId() > 0){
                 addLocationsToDB(justAdded.getId());
                 addPathToDB(justAdded.getId());
