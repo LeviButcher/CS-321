@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MapPrototype</string>
+    <string name="app_name">Route Tracker</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_view_route">Map</string>
     <string name="submit">Submit</string>
@@ -8,4 +8,9 @@
     <string name="name_of_route">Name of Route</string>
     <string name="description">Description</string>
     <string name="add_files">Add Files</string>
+    <string name="NoRoute">Click that circle button above to add a Route.</string>
+    <string name="drop_marker">Drop Marker</string>
+    <string name="startRoute">Start Route</string>
+    <string name="stopTracking">Stop Tracking</string>
+    <string name="route_list">Route List</string>
 </resources>

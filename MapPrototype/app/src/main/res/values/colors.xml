@@ -3,5 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="listBox">#9e9e9e</color>
+    <color name="listBox">#448aff</color>
+    <color name="listDescription">#d2dae9</color>
+    <color name="fabColor">#d2dae9</color>
 </resources>

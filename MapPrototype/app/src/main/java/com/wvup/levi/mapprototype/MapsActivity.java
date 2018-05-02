@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,22 +17,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.wvup.levi.mapprototype.models.PlaceOfInterest;
 
 import java.util.ArrayList;
@@ -41,6 +34,11 @@ import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
+/**
+ * BoilerPlated FragmentActivity provided by Android Studio. Builds out Google Maps then allows functionality for
+ * recording a route and adding location to that route. Once Route recording is stop, a new activity will be started
+ * for saving all the data collected from this activity.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationListener, GoogleMap.OnMapLongClickListener{
 
     private GoogleMap mMap;
@@ -66,41 +64,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
     }
 
-    public void eventStartTrackingRoute(View v){
-        trackingRoute = true;
-        //mount up tracking listeners
-        startTrackingRoute();
-        //grab button to switch text and onClickListener
-        changeStartRouteButton(trackingRoute);
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        setUpTracking();
     }
 
-    private void changeStartRouteButton(final boolean startTracking){
-        Button startRoute = findViewById(R.id.trackRoute);
-        if(startTracking){
-            startRoute.setText("Stop Tracking");
-        }
-        else{
-            startRoute.setText("Start Route");
-        }
+    /**
+     * Sets up Tracking the route. Adds a onClick listener to the button with the id
+     * of "trackRoute" that handles starting and stopping tracking routes.
+     * Once stopped a new Activity is started for adding in information about the route
+     * recorded
+     */
+    private void setUpTracking(){
+        final Button startRoute = findViewById(R.id.trackRoute);
+
         startRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(startTracking){
-                    eventStopTrackingRoute(view);
+                if(trackingRoute){
+                    eventStopTrackingRoute();
+                    startRoute.setText(R.string.startRoute);
                 }
                 else{
-                    eventStartTrackingRoute(view);
+                    startTrackingRoute();
+                    startRoute.setText(R.string.stopTracking);
+                    trackingRoute = true;
                 }
             }
         });
     }
 
-    public void eventStopTrackingRoute(View v){
+    /**
+     * event handler for stopping tracking the route. When called a new activity is started
+     * for entering in information about the route but only if tracking was happening when this method is called.
+     */
+    private void eventStopTrackingRoute(){
         if(trackingRoute){
             trackingRoute = false;
             //Unmount tracking listeners
             locationManager.removeUpdates(this);
-            changeStartRouteButton(trackingRoute);
             //TODO Send DB stuff to Add_Route
             Intent addRoute = new Intent(this, Add_Route.class);
             addRoute.putExtra("places", places);
@@ -111,6 +115,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
+    /**
+     * Starts tracking the users current location and changes of locations.
+     * If the users hasn't given permission for finding the location then the user is prompted when this method is called<br/>
+     */
     private void startTrackingRoute(){
         if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             //Starts up alert dialog for getting permission
@@ -159,8 +168,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    //Gets location returned from Add_Location
-    //https://stackoverflow.com/questions/35718103/how-to-specify-the-size-of-the-icon-on-the-marker-in-google-maps-v2-android
+    /**
+     * Gets the activity results from starting a activity for add a Location. Add_Location Activity returns back
+     * a PointOfInterest to the called. This Maps activity gets the result of that within this method.
+     * Resizing of Bitmaps Found at -> https://stackoverflow.com/questions/35718103/how-to-specify-the-size-of-the-icon-on-the-marker-in-google-maps-v2-android
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(requestCode == LOCATION_REQUEST && resultCode == RESULT_OK){
@@ -189,6 +205,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    /**
+     * OnClick event handler for adding a Location. Starts the Add_Location activity and passes in the lastKnow location
+     * into the activity for where this location is at. <br/>This method is for dropping a location at the user's current
+     * location
+     * @param v
+     */
     public void addLocation(View v){
         if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //This may not work

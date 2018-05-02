@@ -1,23 +1,26 @@
 package com.wvup.levi.mapprototype;
 
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.wvup.levi.mapprototype.models.PlaceOfInterest;
 import com.wvup.levi.mapprototype.models.Route;
 import com.wvup.levi.mapprototype.models.RoutePoint;
-import com.wvup.levi.mapprototype.room.RouteDatabase;
 import com.wvup.levi.mapprototype.room.RouteRepository;
-
 import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * Add Route Activity
+ * Used for a Form for adding the name, and description for a route.<br/>
+ * DB inserts all happen within this activity. pass in extra intent data for a List of LatLngPoints,
+ * and a list of PointOfInterest. All info for the route is then inserted at once on Submission of the form.
+ *
+ * @author Levi Butcher
+ */
 public class Add_Route extends AppCompatActivity {
 
     RouteRepository repo;
@@ -30,6 +33,12 @@ public class Add_Route extends AppCompatActivity {
         repo = new RouteRepository(this.getApplication());
     }
 
+    /**
+     * OnClick event handler for submission.
+     * Starts adding to the DB and if that is successful
+     * finishes the activity going back to the activity that started this activity.
+     * @param v View that was clicked
+     */
     public void Submit(View v){
         if(addRouteToDB())
             finish();
@@ -40,6 +49,12 @@ public class Add_Route extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets the name and description of the route from the form and insert the new Route to
+     * the DB. <br/> If succesful then it will start the methods to add the PointOfInterests
+     * and RoutePoints
+     * @return true if all DB inserts go successfully
+     */
     private boolean addRouteToDB(){
         EditText titleET = findViewById(R.id.title);
         EditText descriptionET = findViewById(R.id.description);
@@ -65,6 +80,11 @@ public class Add_Route extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Adds all the PlaceOfInterests to the DB
+     *
+     * @param routeId The route's Id that these Places are for
+     */
     private void addLocationsToDB(int routeId){
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -78,6 +98,11 @@ public class Add_Route extends AppCompatActivity {
         }
     }
 
+    /**
+     * Adds all the RoutePoints to the DB
+     *
+     * @param routeId The route's Id that these RoutePoints are for
+     */
     private void addPathToDB(int routeId){
         Bundle extras = getIntent().getExtras();
         if(extras != null){

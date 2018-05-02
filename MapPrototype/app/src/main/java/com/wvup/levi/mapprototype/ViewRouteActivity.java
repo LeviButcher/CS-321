@@ -29,6 +29,13 @@ import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
+/**
+ * Activity for viewing a route's Path using Google's Maps<br/>
+ * The route displayed will be the routeId that is passed in, which is done when starting this activity, pass
+ * in the key of "RouteId" in the extras and the actual routeId to accompany the key.
+ *
+ * @author Levi Butcher
+ */
 public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -49,6 +56,7 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
 
     }
 
+    @Override
     protected void onStart(){
         super.onStart();
         Bundle extras = getIntent().getExtras();
@@ -84,16 +92,30 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
         centerOnPathStart();
     }
 
+    /**
+     * Centers the Camera and zooms in at the start of the Route. Also, a Marker
+     * is added to the beginning and end of the Route
+     *
+     */
     public void centerOnPathStart(){
         if(points.size() > 0){
             RoutePoint first = points.get(0);
-            LatLng firstLatLng =new LatLng(first.getLatitude(), first.getLongitude());
-            MarkerOptions placeMarker = new MarkerOptions().position(firstLatLng).title("Start");
+            RoutePoint last = points.get(points.size() -1 );
+            LatLng firstLatLng = new LatLng(first.getLatitude(), first.getLongitude());
+            LatLng lastLatLng = new LatLng(last.getLatitude(), last.getLongitude());
+            MarkerOptions placeMarker = new MarkerOptions().position(firstLatLng).title("Start")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            MarkerOptions lastMarker = new MarkerOptions().position(lastLatLng).title("End")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
             mMap.addMarker(placeMarker);
+            mMap.addMarker(lastMarker);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15.5f));
         }
     }
 
+    /**
+     * Builds out a PolyLine for all the RoutePoints for this route
+     */
     private void traceRoute(){
         ArrayList<LatLng> latLngPoints = new ArrayList<>();
         for(RoutePoint point : points){
@@ -103,10 +125,14 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
         route.setPoints(latLngPoints);
     }
 
+    /**
+     * Adds on all the markers for the PlaceOfInterests onto the map
+     */
     private void addOnPlaces(){
         for(PlaceOfInterest place : places){
             LatLng newLatLong = new LatLng(place.getLatitude(), place.getLongitude());
-            final MarkerOptions placeMarker = new MarkerOptions().position(newLatLong).title(place.getName());
+            final MarkerOptions placeMarker = new MarkerOptions().position(newLatLong).title(place.getName())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)).zIndex(10.0f);
             if(place.getPicture() != null){
                 int height = 100;
                 int width = 100;
