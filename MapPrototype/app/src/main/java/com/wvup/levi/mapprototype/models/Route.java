@@ -4,6 +4,10 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+/**
+ * Class represents a Route. a route has a name and a description. This is the parent table to
+ * RoutePoints and PlaceOfInterest
+ */
 @Entity(tableName = "Route", indices = {@Index(value = {"title"})})
 public class Route{
 

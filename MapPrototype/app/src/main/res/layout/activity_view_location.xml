@@ -43,7 +43,7 @@
                 android:layout_marginTop="28dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:color/holo_blue_bright" />
+                android:background="@drawable/image_background"/>
 
             <TextView
                 android:id="@+id/textView3"

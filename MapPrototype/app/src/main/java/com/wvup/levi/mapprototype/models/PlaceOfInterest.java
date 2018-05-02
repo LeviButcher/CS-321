@@ -10,6 +10,10 @@ import java.io.Serializable;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
+/**
+ * Represents a Landmark or some place of interesting quality. a place has a name,
+ * description, and a Picture of the place. Class is used for sqlLite by room.
+ */
 @Entity(tableName = "PlaceOfInterest", indices = {@Index(value = {"name", "routeId"})},
         foreignKeys = @ForeignKey(entity = Route.class, parentColumns = "id",
         childColumns = "routeId", onDelete = CASCADE))

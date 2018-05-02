@@ -8,6 +8,10 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
+/**
+ * RoutePoint represents a specific Latitude and longitude that is on the route. Used for showing the path that was walked
+ * on a route
+ */
 @Entity(tableName = "RoutePoint", indices = {@Index(value = {"routeId"})},
     foreignKeys = @ForeignKey(entity = Route.class, parentColumns = "id",
         childColumns = "routeId", onDelete = CASCADE))
