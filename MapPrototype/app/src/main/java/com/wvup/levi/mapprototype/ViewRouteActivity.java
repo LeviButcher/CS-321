@@ -106,7 +106,7 @@ public class ViewRouteActivity extends FragmentActivity implements OnMapReadyCal
             MarkerOptions placeMarker = new MarkerOptions().position(firstLatLng).title("Start")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             MarkerOptions lastMarker = new MarkerOptions().position(lastLatLng).title("End")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
             mMap.addMarker(placeMarker);
             mMap.addMarker(lastMarker);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15.5f));

@@ -26,7 +26,7 @@ public class ByteConvertor {
     public static byte[] convertToByteArr(Bitmap bitmap){
 
         ByteArrayOutputStream blob = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, blob);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 0, blob);
         return blob.toByteArray();
     }
 

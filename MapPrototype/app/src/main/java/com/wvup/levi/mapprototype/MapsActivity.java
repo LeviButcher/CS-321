@@ -182,7 +182,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(requestCode == LOCATION_REQUEST && resultCode == RESULT_OK){
             PlaceOfInterest fromAdd = (PlaceOfInterest) data.getSerializableExtra("Place");
             LatLng newLatLong = new LatLng(fromAdd.getLatitude(), fromAdd.getLongitude());
-            MarkerOptions placeMarker = new MarkerOptions().position(newLatLong).title(fromAdd.getName());
+            MarkerOptions placeMarker = new MarkerOptions().position(newLatLong).title(fromAdd.getName())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
             if(fromAdd.getPicture() != null){
                 Log.d(TAG, "getPicture was not null");
                 int height = 100;
