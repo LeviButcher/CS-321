@@ -29,7 +29,8 @@ import static java.nio.file.Files.readAllBytes;
 
 public class Add_Location extends AppCompatActivity {
     private final String TAG = "Add_LocationActivity";
-    private final int REQUEST_FILE = 6;
+    private final int REQUEST_PIC = 6;
+    private final int REQUEST_FILE = 9;
     private PlaceOfInterest newLocation;
     private EditText nameEditText;
     private EditText descriptionEditText;
@@ -52,13 +53,21 @@ public class Add_Location extends AppCompatActivity {
         intent.setType("image/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         // Only the system receives the ACTION_OPEN_DOCUMENT, so no need to test.
+        startActivityForResult(intent, REQUEST_PIC);
+    }
+
+    public void chooseAFile(View v){
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        // Only the system receives the ACTION_OPEN_DOCUMENT, so no need to test.
         startActivityForResult(intent, REQUEST_FILE);
     }
 
     //Convert file to byte - byte[] byteFiles = Files.readAllBytes(newFile.toPath());
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == REQUEST_FILE && resultCode == RESULT_OK){
+        if(requestCode == REQUEST_PIC && resultCode == RESULT_OK){
             Uri path = data.getData();
             if(path.getPath() != null){
                 try{
@@ -74,6 +83,9 @@ public class Add_Location extends AppCompatActivity {
                 }
 
             }
+        }
+        if(requestCode == REQUEST_FILE && resultCode == RESULT_OK){
+            Log.d(TAG, "file was selected to be added");
         }
     }
 

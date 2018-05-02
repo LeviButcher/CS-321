@@ -50,13 +50,12 @@ public class Add_Route extends AppCompatActivity {
             int id = repo.insertRoute(route);
             //TODO insert location and path to db
             if(id == -1){
-                Log.d(TAG, "error");
+                Log.d(TAG, "error within addRouteToDB");
                 finish();
             }
             addLocationsToDB(id);
             addPathToDB(id);
             return true;
-
         }
         else{
             Toast toast = new Toast(this);

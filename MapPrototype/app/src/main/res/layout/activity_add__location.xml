@@ -22,8 +22,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="148dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="256dp"
         android:onClick="Submit"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,6 +72,17 @@
         android:textSize="25sp"
         android:text="@string/description"
         app:layout_constraintBottom_toTopOf="@+id/description"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="28dp"
+        android:text="@string/add_files"
+        android:onClick="chooseAFile"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
