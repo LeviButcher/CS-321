@@ -1,13 +1,9 @@
 package com.wvup.levi.mapprototype;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,18 +11,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.wvup.levi.mapprototype.models.PlaceOfInterest;
 
-import java.io.File;
-import java.nio.file.Files;
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static java.nio.file.Files.find;
-import static java.nio.file.Files.readAllBytes;
-
+/**
+ * Add Location Activity
+ * used for a form where a user is enterering information about a <br/>
+ * Locations name, description, and Picture. On submittion this activity retrieves that info
+ * from the view and sends that newly created PlaceOfInterest back to the activity that start this activity.
+ *
+ * @author Levi Butcher
+ */
 public class Add_Location extends AppCompatActivity {
     private final String TAG = "Add_LocationActivity";
     private final int REQUEST_FILE = 6;
@@ -41,12 +35,19 @@ public class Add_Location extends AppCompatActivity {
         newLocation = new PlaceOfInterest();
     }
 
+    @Override
     protected void onStart(){
         super.onStart();
         nameEditText = findViewById(R.id.name);
         descriptionEditText = findViewById(R.id.description);
     }
 
+    /**
+     * OnClick event for a View within the xml View<br/>
+     * Starts a intent for a user to find and select a image for the
+     * location being added
+     * @param v View that fired the onClick event
+     */
     public void addLocationPic(View v){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
@@ -57,6 +58,10 @@ public class Add_Location extends AppCompatActivity {
 
     //Convert file to byte - byte[] byteFiles = Files.readAllBytes(newFile.toPath());
 
+    /*
+    *  requestCodes are defined as static ints at the top of the class.
+     */
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_FILE && resultCode == RESULT_OK){
             Uri path = data.getData();
@@ -78,8 +83,17 @@ public class Add_Location extends AppCompatActivity {
     }
 
 
-    //Very useful for return data
-    //https://stackoverflow.com/questions/14785806/android-how-to-make-an-activity-return-results-to-the-activity-which-calls-it
+    //
+
+    /**
+     * onClick event handler for submitting the form data. <br/>
+     * Gets all form data, creating a PlaceOfInterest and sending it back to the activity
+     * that start this activity. Key value for the extra data stored in the intent is "Place"
+     *
+     * <br/>Very useful for return data
+     * https://stackoverflow.com/questions/14785806/android-how-to-make-an-activity-return-results-to-the-activity-which-calls-it
+     * @param v View that fired event when clicked
+     */
     public void Submit(View v){
 
         newLocation.setName(nameEditText.getText().toString());

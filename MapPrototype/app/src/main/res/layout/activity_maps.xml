@@ -22,7 +22,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:text="Drop Marker"
+        android:text="@string/drop_marker"
         android:onClick="addLocation"/>
 
     <Button
@@ -32,8 +32,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:onClick="eventStartTrackingRoute"
-        android:text="Start Route" />
+        android:text="@string/startRoute"
+        />
 
 </RelativeLayout>
 

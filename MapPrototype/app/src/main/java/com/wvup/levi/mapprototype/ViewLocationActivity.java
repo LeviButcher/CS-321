@@ -9,6 +9,14 @@ import android.widget.TextView;
 import com.wvup.levi.mapprototype.models.PlaceOfInterest;
 import com.wvup.levi.mapprototype.room.RouteRepository;
 
+/**
+ * Activity for viewing the details of a PlaceOfInterest
+ * expected any calling activity to pass in the ID of the PlaceOfInterest,
+ * key to use is "placeId", then db is queried to find that PlaceOfInterest.<br/>
+ * If no PlaceOfInterest is found the activity exits, if not then PlaceOfInterest is displayed in the view
+ *
+ * @author Levi Butcher
+ */
 public class ViewLocationActivity extends AppCompatActivity {
 
     private RouteRepository repo;
@@ -26,6 +34,7 @@ public class ViewLocationActivity extends AppCompatActivity {
         repo = new RouteRepository(this.getApplication());
     }
 
+    @Override
     protected void onStart(){
         super.onStart();
         locName = findViewById(R.id.viewLocName);
@@ -42,6 +51,11 @@ public class ViewLocationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets up the views to have the correct information dislayed.
+     * Gets the Name, descriptions, and Image of the PlaceOfInterest
+     * and displays it in the view
+     */
     public void setUpView()
     {
         locName.setText(viewLocation.getName());
